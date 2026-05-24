@@ -42,8 +42,7 @@ pub fn ParsedQuery(comptime tmp_query: []const u8) type {
         const ParsedQueryResult = struct {
             bind_markers: [128]BindMarker,
             bind_markers_len: usize,
-            query: [tmp_query.len]u8,
-            query_len: usize,
+            query: []const u8,
         };
 
         fn parse() ParsedQueryResult {
@@ -204,14 +203,12 @@ pub fn ParsedQuery(comptime tmp_query: []const u8) type {
 
             const final_bind_markers = tmp_bind_markers;
             const final_bind_markers_len = nb_tmp_bind_markers;
-            const final_buf = buf;
-            const final_query_len = pos;
+            const final_buf = buf[0..pos].*;
 
             return .{
                 .bind_markers = final_bind_markers,
                 .bind_markers_len = final_bind_markers_len,
-                .query = final_buf,
-                .query_len = final_query_len,
+                .query = &final_buf,
             };
         }
     };
